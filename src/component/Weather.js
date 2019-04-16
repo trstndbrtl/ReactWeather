@@ -34,6 +34,9 @@ class Weather extends Component {
         if (!weatherI) {
             return <div>Wait a moment</div>;
         }
+        // Get date and hours now
+        var currentDate = new Date();
+        const dateDay = currentDate.toLocaleString('fr-FR', { timeZone: 'Europe/paris' });
         // Get Sunrise
         var secMorning = weatherI.sys.sunrise;
         var dateMorning = new Date(secMorning * 1000);
@@ -55,16 +58,15 @@ class Weather extends Component {
             'clear sky' : 'Je peux pas j\'ai sky',
             'haze' : 'Je peux pas j\'ai New York',
             'scattered clouds' : 'Je peux pas j\'ai Ping Pong',
-
         };
 
-        console.log(excuses);
         return (
             <div>
                 <div className="size">
                     <div>
                         <h1>{ name }</h1>
                         <h2>{ excuses[description] }</h2>
+                        <div>{ dateDay }</div>
                         <img alt={name} src={`//openweathermap.org/img/w/${ icon }.png`} />
                         <div><em>{ description }</em></div>
                         <div>Lever du soleil : { timestrSunrise }</div>
