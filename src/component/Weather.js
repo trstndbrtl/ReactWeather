@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Key } from '../Utils/Key'
+import React, { Component } from 'react';
+import { Key } from '../Utils/Key';
 
 class Weather extends Component {
 
@@ -19,7 +19,9 @@ class Weather extends Component {
 
     handleClick() {
 
-        fetch(`https://api.openweathermap.org/data/2.5/weather?q=London,uk&appid=${Key}`)
+        var City = ['London', 'Paris,FR', 'Lisbon,P', 'Marseille,FR', 'Lyon,FR'][Math.floor(Math.random() * 5)];
+
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${City},uk&appid=${Key}`)
             .then(response => response.json())
             .then(data => console.log(data) || this.setState({ weatherInfo: data }));
     }
@@ -37,7 +39,7 @@ class Weather extends Component {
             <div>
                 <div className="size">
                     <div>
-                        {weatherI.base }
+                        {weatherI.name }
                         {weatherI.wind.deg }
                         <button className="random-quote" onClick={() => this.handleClick()}>
                             random
