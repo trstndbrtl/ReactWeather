@@ -13,12 +13,13 @@ class Weather extends Component {
     }
 
     componentDidMount() {
+        console.log(Key);
         this.handleClick();
     }
 
     handleClick() {
 
-        fetch("https://api.openweathermap.org/data/2.5/weather?q=London,uk&appid=baf7b1242f239d266c917fa057321bfb")
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=London,uk&appid=${Key}`)
             .then(response => response.json())
             .then(data => console.log(data) || this.setState({ weatherInfo: data }));
     }
