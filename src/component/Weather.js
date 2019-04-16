@@ -12,39 +12,73 @@ class Weather extends Component {
 
     }
 
+    // Set default value
     componentDidMount() {
-        console.log(Key);
         this.handleClick();
     }
 
+    // Request Api
     handleClick() {
-
+        // Store random city
         var City = ['London', 'Paris,FR', 'Lisbon,P', 'Marseille,FR', 'Lyon,FR'][Math.floor(Math.random() * 5)];
-
+        // Fetch info
         fetch(`https://api.openweathermap.org/data/2.5/weather?q=${City},uk&appid=${Key}`)
             .then(response => response.json())
             .then(data => console.log(data) || this.setState({ weatherInfo: data }));
     }
 
+    // Get sunrise with second
+    getSunrise(seconde) {
+        let secMorning = seconde;
+        let dateMorning = new Date(secMorning * 1000);
+        return dateMorning.toLocaleTimeString();
+    }
+
+    // get Sunset with second
+    getSunset(seconde) {
+        let secNight = seconde;
+        let dateNight = new Date(secNight * 1000);
+        return dateNight.toLocaleTimeString();
+    }
+
+    // get the date of the day
+    getCurrentDate() {
+        let currentDate = new Date();
+        return currentDate.toLocaleString('fr-FR', { timeZone: 'Europe/paris' });
+    }
+
+    // get excuses with description
+    getExcuse(cloud) {
+        const excuses = {
+            'broken clouds': 'Hey, je peux pas venir j\'ai poney',
+            'overcast clouds': 'Hey, je peux pas venir j\'ai pixine',
+            'clear sky' : 'Je peux pas j\'ai sky',
+            'haze' : 'Je peux pas j\'ai New York',
+            'scattered clouds' : 'Je peux pas j\'ai Ping Pong',
+            'few clouds' : 'Je peux pas j\'ai ascenseur',
+        };
+
+        return excuses[cloud];
+    }
+
+    // get icon
+    getIcon(icon) {
+        return `//openweathermap.org/img/w/${ icon }.png`;
+    }
+
     render() {
 
-
         const weatherI = this.state.weatherInfo;
-
+        // check if state weather info existe
         if (!weatherI) {
             return <div>Wait a moment</div>;
         }
         // Get date and hours now
-        var currentDate = new Date();
-        const dateDay = currentDate.toLocaleString('fr-FR', { timeZone: 'Europe/paris' });
+        const dateDay = this.getCurrentDate();
         // Get Sunrise
-        var secMorning = weatherI.sys.sunrise;
-        var dateMorning = new Date(secMorning * 1000);
-        var timestrSunrise = dateMorning.toLocaleTimeString();
+        var timestrSunrise = this.getSunrise(weatherI.sys.sunrise);
         // Get Sunset
-        var secNight = weatherI.sys.sunset;
-        var dateNight = new Date(secNight * 1000);
-        var timestrSunset = dateNight.toLocaleTimeString();
+        var timestrSunset = this.getSunset(weatherI.sys.sunset);
         // get descritption
         const description = weatherI.weather[0].description;
         // get icon
@@ -52,22 +86,16 @@ class Weather extends Component {
         // Get name
         const name = weatherI.name;
         // Some excuses
-        const excuses = {
-            'broken clouds': 'Hey, je peux pas venir j\'ai poney',
-            'overcast clouds': 'Hey, je peux pas venir j\'ai pixine',
-            'clear sky' : 'Je peux pas j\'ai sky',
-            'haze' : 'Je peux pas j\'ai New York',
-            'scattered clouds' : 'Je peux pas j\'ai Ping Pong',
-        };
+        const excuses = this.getExcuse(description);
 
         return (
             <div>
                 <div className="size">
                     <div>
                         <h1>{ name }</h1>
-                        <h2>{ excuses[description] }</h2>
+                        <h2>{ excuses }</h2>
                         <div>{ dateDay }</div>
-                        <img alt={name} src={`//openweathermap.org/img/w/${ icon }.png`} />
+                        <img alt={name} src={this.getIcon(icon)} />
                         <div><em>{ description }</em></div>
                         <div>Lever du soleil : { timestrSunrise }</div>
                         <div>Coucher du soleil : { timestrSunset }</div>
