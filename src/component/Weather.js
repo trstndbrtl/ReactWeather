@@ -34,13 +34,31 @@ class Weather extends Component {
         if (!weatherI) {
             return <div>Wait a moment</div>;
         }
-
+        // Get Sunrise
+        var secMorning = weatherI.sys.sunrise;
+        var dateMorning = new Date(secMorning * 1000);
+        var timestrSunrise = dateMorning.toLocaleTimeString();
+        // Get Sunset
+        var secNight = weatherI.sys.sunset;
+        var dateNight = new Date(secNight * 1000);
+        var timestrSunset = dateNight.toLocaleTimeString();
+        // get descritption
+        const description = weatherI.weather[0].description;
+        // get icon
+        const icon = weatherI.weather[0].icon;
+        // Get name
+        const name = weatherI.name;
+        
         return (
             <div>
                 <div className="size">
                     <div>
-                        {weatherI.name }
-                        {weatherI.wind.deg }
+                        <h1>{ name }</h1>
+                        <img src={`//openweathermap.org/img/w/${ icon }.png`} />
+                        <div><em>{ description }</em></div>
+                        <div>Lever du soleil : { timestrSunrise }</div>
+                        <div>Coucher du soleil : { timestrSunset }</div>
+                        <br/>
                         <button className="random-quote" onClick={() => this.handleClick()}>
                             random
                         </button>
