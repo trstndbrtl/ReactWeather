@@ -48,13 +48,24 @@ class Weather extends Component {
         const icon = weatherI.weather[0].icon;
         // Get name
         const name = weatherI.name;
-        
+        // Some excuses
+        const excuses = {
+            'broken clouds': 'Hey, je peux pas venir j\'ai poney',
+            'overcast clouds': 'Hey, je peux pas venir j\'ai pixine',
+            'clear sky' : 'Je peux pas j\'ai sky',
+            'haze' : 'Je peux pas j\'ai New York',
+            'scattered clouds' : 'Je peux pas j\'ai Ping Pong',
+
+        };
+
+        console.log(excuses);
         return (
             <div>
                 <div className="size">
                     <div>
                         <h1>{ name }</h1>
-                        <img src={`//openweathermap.org/img/w/${ icon }.png`} />
+                        <h2>{ excuses[description] }</h2>
+                        <img alt={name} src={`//openweathermap.org/img/w/${ icon }.png`} />
                         <div><em>{ description }</em></div>
                         <div>Lever du soleil : { timestrSunrise }</div>
                         <div>Coucher du soleil : { timestrSunset }</div>
